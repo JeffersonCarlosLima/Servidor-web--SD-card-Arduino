@@ -22,13 +22,13 @@ void setup()
     // initialize SD card
     Serial.println("Initializing SD card...");
     if (!SD.begin(4)) {
-        Serial.println("ERROR - SD card initialization failed!");
+        Serial.println("ERROR - Falha na inicialização do cartão SD!");
         return;    // init failed
     }
-    Serial.println("SUCCESS - SD card initialized.");
+    Serial.println("SUCCESS - SD inicializado.");
     // check for index.htm file
-    if (!SD.exists("INDEX~1.HTM")) {
-        Serial.println("ERROR - Can't find index.html file!");
+    if (!SD.exists("PAGINA/INDEX~1.HTM")) {
+        Serial.println("ERROR - Não encontramos o arquivo index.html!");
         return;  // can't find index file
     }
     Serial.println("Arquivo index.html encontrado.");
@@ -48,11 +48,11 @@ void loop()
                 if (c == '\n' && currentLineIsBlank) {
                     // send a standard http response header
                     client.println("HTTP/1.1 200 OK");
-                    client.println("Content-Type: text/html");
+                    client.println("Content-Type: text/html\n\r\n\r");
                     client.println("Connection: close");
                     client.println();
                     // send web page
-                    webFile = SD.open("INDEX~1.HTM");        // open web page file
+                    webFile = SD.open("PAGINA/INDEX~1.HTM");        // open web page file
                     if (webFile) {
                         while(webFile.available()) {
                             client.write(webFile.read()); // send web page to client
